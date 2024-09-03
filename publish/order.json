@@ -1,0 +1,48 @@
+{
+  "order_uid": "1",
+  "track_number": "NEWTRACK123",
+  "entry": "NEWENTRY",
+  "delivery": {
+    "name": "John Doe",
+    "phone": "+1234567890",
+    "zip": "123456",
+    "city": "New City",
+    "address": "123 New Street",
+    "region": "New Region",
+    "email": "john.doe@example.com"
+  },
+  "payment": {
+    "transaction": "1",
+    "currency": "USD",
+    "provider": "newpay",
+    "amount": 1000,
+    "payment_dt": "2024-08-21T09:00:00Z",
+    "bank": "newbank",
+    "delivery_cost": 100,
+    "goods_total": 900,
+    "custom_fee": 0
+  },
+  "items": [
+    {
+      "chrt_id": 123456,
+      "track_number": "NEWTRACK123",
+      "price": 500,
+      "rid": "new_rid_1",
+      "name": "Product 1",
+      "sale": 10,
+      "size": "M",
+      "total_price": 450,
+      "nm_id": 12345,
+      "brand": "Brand A",
+      "status": 200
+    }
+  ],
+  "locale": "en",
+  "internal_signature": "",
+  "customer_id": "customer_1",
+  "delivery_service": "newdelivery",
+  "shardkey": "1",
+  "sm_id": 1,
+  "date_created": "2024-08-21T09:00:00Z",
+  "oof_shard": "1"
+}
