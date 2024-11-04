@@ -1,4 +1,4 @@
-module order_service
+module WB-TECH-level-0
 
 go 1.23.0
 

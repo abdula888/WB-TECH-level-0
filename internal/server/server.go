@@ -1,13 +1,14 @@
-package main
+package server
 
 import (
+	"WB-TECH-level-0/internal/cache"
 	"encoding/json"
 	"net/http"
 )
 
-func orderHandler(w http.ResponseWriter, r *http.Request) {
+func OrderHandler(w http.ResponseWriter, r *http.Request) {
 	orderUID := r.URL.Query().Get("id")
-	order, found := getCache(orderUID)
+	order, found := cache.GetCache(orderUID)
 	if !found {
 		http.Error(w, "Order not found", http.StatusNotFound)
 		return

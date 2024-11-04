@@ -1,15 +1,18 @@
-package main
+package database
 
 import (
 	"encoding/json"
 	"log"
+
+	"WB-TECH-level-0/internal/cache"
+	"WB-TECH-level-0/internal/models"
 
 	"github.com/nats-io/stan.go"
 )
 
 var sc stan.Conn
 
-func initNATS() {
+func InitNATS() {
 	var err error
 	sc, err = stan.Connect("test-cluster", "client-123")
 	if err != nil {
@@ -22,7 +25,7 @@ func initNATS() {
 }
 
 func handleOrderMessage(msg *stan.Msg) {
-	var order Order
+	var order models.Order
 	err := json.Unmarshal(msg.Data, &order)
 	if err != nil {
 		log.Printf("Error unmarshalling message: %v", err)
@@ -44,5 +47,5 @@ func handleOrderMessage(msg *stan.Msg) {
 		log.Printf("Error inserting data: %v", err)
 	}
 	// Кэширование данных
-	setCache(order)
+	cache.SetCache(order)
 }

@@ -1,15 +1,18 @@
-package main
+package database
 
 import (
 	"database/sql"
 	"log"
+
+	"WB-TECH-level-0/internal/cache"
+	"WB-TECH-level-0/internal/models"
 
 	_ "github.com/lib/pq"
 )
 
 var db *sql.DB
 
-func initDB() {
+func InitDB() {
 	var err error
 	connStr := "user=order_user password=123 dbname=order_service sslmode=disable"
 	db, err = sql.Open("postgres", connStr)
@@ -18,7 +21,7 @@ func initDB() {
 	}
 }
 
-func loadCacheFromDB() {
+func LoadCacheFromDB() {
 	rows, err := db.Query(`SELECT 
         o.order_uid,
         o.track_number,
@@ -68,13 +71,13 @@ func loadCacheFromDB() {
 	defer rows.Close()
 
 	// Создаём карту для хранения заказов по order_uid
-	orderMap := make(map[string]*Order)
+	orderMap := make(map[string]*models.Order)
 
 	for rows.Next() {
-		var order Order
-		var delivery Delivery
-		var payment Payment
-		var item Item
+		var order models.Order
+		var delivery models.Delivery
+		var payment models.Payment
+		var item models.Item
 
 		err := rows.Scan(
 			&order.OrderUID,
@@ -128,7 +131,7 @@ func loadCacheFromDB() {
 			}
 		} else {
 			// Создание нового заказа с пустым срезом товаров
-			newOrder := Order{
+			newOrder := models.Order{
 				OrderUID:          order.OrderUID,
 				TrackNumber:       order.TrackNumber,
 				Entry:             order.Entry,
@@ -142,7 +145,7 @@ func loadCacheFromDB() {
 				OofShard:          order.OofShard,
 				Delivery:          delivery,
 				Payment:           payment,
-				Items:             []Item{}, // Инициализация пустого среза
+				Items:             []models.Item{}, // Инициализация пустого среза
 			}
 			// Добавление нового заказа в карту
 			orderMap[order.OrderUID] = &newOrder
@@ -160,6 +163,6 @@ func loadCacheFromDB() {
 
 	// Преобразование карты в срез и запись в кэш
 	for _, order := range orderMap {
-		setCache(*order)
+		cache.SetCache(*order)
 	}
 }
